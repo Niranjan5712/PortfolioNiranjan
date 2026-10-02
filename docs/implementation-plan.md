@@ -103,6 +103,12 @@ Defined in `src/index.css`. Brand colours available as Tailwind utilities: `iris
 - With reduced motion, the turning pages and `animateMotion` aren't rendered, the other animations are off, and the hiker sits at the summit.
 - Keyframes are in `src/index.css` (`page-turn`, `eq`, `trail-draw`, `flag`). Tests are in `ClosingSections.test.tsx`. Visual QA: `node scripts/interests-shots.mjs <url> <outDir> <light|dark> <width>`.
 
+#### Deployment
+
+- Live at https://niranjan5712.github.io/PortfolioNiranjan/. Source: https://github.com/Niranjan5712/PortfolioNiranjan (branch `main`).
+- `.github/workflows/deploy.yml` runs on every push to `main`: `npm install` → `npm test` → `npm run build` → GitHub Pages. It uses `npm install` rather than `npm ci` because the Windows-generated lock file lacks Linux-only optional packages.
+- `vite.config.ts` uses `base: './'` and the media paths in `src/data/site.ts` are relative, so the build works under the `/PortfolioNiranjan/` sub-path as well as locally. Check a build under the sub-path with `npx vite preview --base /PortfolioNiranjan/ --port 4300` plus `node scripts/subpath-check.mjs`.
+
 #### R8 notes (QA)
 
 - Results: `tsc` clean; `oxlint` 0 errors (8 pre-existing warnings: fast-refresh exports, `Date` in the footer, one setState in `useVideoFrames`); `vite build` OK (JS 173 kB gzip, just over Vite's 500 kB raw chunk warning); Jest 185/185; Playwright 49 passed, 7 skipped (project-specific desktop/mobile cases), covering desktop, mobile and the reduced-motion specs.
